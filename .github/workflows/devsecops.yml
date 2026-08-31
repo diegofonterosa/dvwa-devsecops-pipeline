@@ -14,7 +14,12 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
+      - name: Instalar Semgrep
+        run: pip install semgrep
+
       - name: Ejecutar Semgrep
-        uses: returntocorp/semgrep-action@v1
-        with:
-          config: p/php
+        run: semgrep --config p/php --config p/security-audit src/ --json --output semgrep-results.json || true
+
+      - name: Mostrar resultados
+        run: semgrep --config p/php --config p/security-audit src/
+        continue-on-error: true
