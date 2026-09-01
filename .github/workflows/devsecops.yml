@@ -42,3 +42,19 @@ jobs:
           scan-type: 'fs'
           scan-ref: '.'
           severity: 'HIGH,CRITICAL'
+
+  secrets:
+    name: "Secretos - Gitleaks"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout código
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Escanear secretos con Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_LICENSE: ""
+        continue-on-error: true
