@@ -1,4 +1,4 @@
-﻿{
+{
     "require": {
         "monolog/monolog": "1.18.0",
         "guzzlehttp/guzzle": "6.3.0",
