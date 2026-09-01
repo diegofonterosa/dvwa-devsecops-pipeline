@@ -1,0 +1,7 @@
+﻿{
+    "require": {
+        "monolog/monolog": "1.18.0",
+        "guzzlehttp/guzzle": "6.3.0",
+        "symfony/http-kernel": "4.4.0"
+    }
+}

@@ -31,25 +31,14 @@ jobs:
       - name: Checkout código
         uses: actions/checkout@v4
 
-      - name: Crear composer.json de ejemplo
+      - name: Instalar dependencias PHP
         run: |
-          cat > composer.json << 'EOF'
-          {
-            "require": {
-              "monolog/monolog": "1.18.0",
-              "guzzlehttp/guzzle": "6.3.0",
-              "symfony/http-kernel": "4.4.0"
-            }
-          }
-          EOF
+          sudo apt-get update && sudo apt-get install -y composer
+          composer install --no-interaction 2>&1 || true
 
-      - name: Instalar Trivy
-        run: |
-          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
-          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
-          echo "deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main" | sudo tee /etc/apt/sources.list.d/trivy.list
-          sudo apt-get update
-          sudo apt-get install -y trivy
-
-      - name: Escanear dependencias
-        run: trivy fs --scanners vuln --severity HIGH,CRITICAL . || true
+      - name: Escanear dependencias con Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          severity: 'HIGH,CRITICAL'
