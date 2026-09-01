@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   sast:
     name: "SAST - Semgrep"
@@ -95,5 +99,6 @@ jobs:
         with:
           target: 'http://localhost:8080/'
           rules_file_name: ''
-          cmd_options: '-a'
+          cmd_options: '-a -j'
+          allow_issue_writing: false
         continue-on-error: true
